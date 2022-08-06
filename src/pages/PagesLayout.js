@@ -47,11 +47,17 @@ const PagesLayout = () => {
       <Flex flexDirection={{ md: "row", base: "column" }} h={"100vh"}>
         <VStack
           as={"nav"}
-          position={"sticky"}
-          w={sbMinimize ? "32" : "60"}
+          position={"fixed"}
+          // w={sbMinimize ? "0" : "60"}
+          w={"60"}
           transition={"all ease-in-out .5s"}
-          //   bgColor={"cyan.500"}
+          bgColor={colorMode === "dark" ? "gray.800" : "white"}
           display={{ md: "flex", base: "none" }}
+          h={"100vh"}
+          zIndex={"modal"}
+          transform={"auto"}
+          translateX={sbMinimize ? "-60" : "0"}
+          overflowY={"scroll"}
         >
           <Center h={"16"}>
             <Text fontSize={"4xl"}>
@@ -74,6 +80,7 @@ const PagesLayout = () => {
           <VStack
             w={"full"}
             justifyContent={sbMinimize ? "center" : "flex-start"}
+            // overflowY={"scroll"}
           >
             <Container>
               <Box w={"full"} my={"2"}>
@@ -97,10 +104,11 @@ const PagesLayout = () => {
           display={{ md: "none", base: "flex" }}
           flexWrap={"nowrap"}
           w={"full"}
-          h="14"
+          // h="60"
+          position={"sticky"}
           shadow={"md"}
         >
-          <Container display={"flex"} alignItems="center">
+          <Container display={"flex"} alignItems="center" h={"16"}>
             <HStack flex={1}>
               <Text as={"span"}>ALCHI</Text>
               <Spacer />
@@ -121,7 +129,12 @@ const PagesLayout = () => {
             </HStack>
           </Container>
         </Box>
-        <Flex flex={1} bgColor={colorMode !== "dark" ? "gray.50" : "gray.900"}>
+        <Flex
+          flex={1}
+          bgColor={colorMode !== "dark" ? "gray.50" : "gray.900"}
+          ml={!sbMinimize ? { base: "0", md: "60" } : "0"}
+          transition={"all ease-in-out .5s"}
+        >
           <Container maxW={{ md: "container.xl", base: "md" }}>
             <HStack display={{ base: "none", md: "flex" }} h={"16"}>
               {!sbMinimize ? (
@@ -144,67 +157,87 @@ const PagesLayout = () => {
                 ></IconButton>
               )}
               <Spacer />
-              <FormControl display="flex" alignItems="center">
-                <FormLabel htmlFor="dark-mode" mb="0">
-                  Dark Mode
-                </FormLabel>
-                <Switch
-                  onChange={toggleColorMode}
-                  //   color="gray.200"
-                  colorScheme="whiteAlpha"
-                  id="dark-mode"
-                />
-              </FormControl>
-              <Menu>
-                <MenuButton
-                  as={IconButton}
-                  icon={<MdNotifications />}
-                  bgColor={"transparent"}
-                  rounded={"full"}
-                />
-                {/* <IconButton
-                      aria-label="Profile"
-                      // colorScheme=""
-                      bgColor={"transparent"}
-                      rounded={"full"}
-                      icon={<MdNotifications />}
-                    /> */}
-                <MenuList>
-                  <MenuGroup title="Notification">
-                    <MenuItem>
-                      <Box>
-                        <HStack>
-                          <Text>your spending exceeds the limit</Text>
+              {/* Notification Button */}
+              <HStack
+                bgColor={colorMode !== "dark" ? "white" : "gray.800"}
+                rounded={"full"}
+                shadow={"md"}
+              >
+                <Menu>
+                  <MenuButton
+                    as={IconButton}
+                    icon={<MdNotifications />}
+                    bgColor={"transparent"}
+                    rounded={"full"}
+                  />
+                  <MenuList zIndex={"popover"}>
+                    <MenuGroup title="Notification">
+                      <MenuItem>
+                        <Box>
+                          <HStack>
+                            <Text>Project close to deadline</Text>
+                            <Spacer />
+                            &nbsp;
+                            <Tag
+                              size={"sm"}
+                              variant={"solid"}
+                              colorScheme={"red"}
+                            >
+                              NEW!
+                            </Tag>{" "}
+                          </HStack>
+                          <Text as={"sub"}>05-08-2022</Text>
+                        </Box>
+                      </MenuItem>
+                    </MenuGroup>
+                  </MenuList>
+                </Menu>
+
+                {/* Profile Button */}
+                <Menu>
+                  <MenuButton
+                    as={IconButton}
+                    icon={<MdPerson />}
+                    bgColor={"transparent"}
+                    rounded={"full"}
+                  />
+                  <MenuList zIndex={"popover"}>
+                    <MenuGroup title="Profile">
+                      <MenuItem>
+                        <FormControl display="flex" alignItems="center">
+                          <FormLabel htmlFor="dark-mode" mb="0">
+                            Dark Mode
+                          </FormLabel>
                           <Spacer />
-                          &nbsp;
-                          <Tag
-                            size={"sm"}
-                            variant={"solid"}
-                            colorScheme={"red"}
-                          >
-                            NEW!
-                          </Tag>{" "}
-                        </HStack>
-                        <Text as={"sub"}>05-08-2022</Text>
-                      </Box>
-                    </MenuItem>
-                  </MenuGroup>
-                </MenuList>
-              </Menu>
-              <IconButton
+                          <Switch
+                            onChange={toggleColorMode}
+                            //   color="gray.200"
+                            colorScheme="whiteAlpha"
+                            id="dark-mode"
+                          />
+                        </FormControl>
+                      </MenuItem>
+                    </MenuGroup>
+                  </MenuList>
+                </Menu>
+
+                {/* <IconButton
                 aria-label="Profile"
                 // colorScheme=""
                 bgColor={"transparent"}
                 rounded={"full"}
                 icon={<MdPerson />}
-              ></IconButton>
-              <IconButton
-                aria-label="Menu"
-                // colorScheme="teal"
-                bgColor={"transparent"}
-                rounded={"full"}
-                icon={<MdOutlineMenu />}
-              ></IconButton>
+              ></IconButton> */}
+
+                {/* Menu Button */}
+                <IconButton
+                  aria-label="Menu"
+                  // colorScheme="teal"
+                  bgColor={"transparent"}
+                  rounded={"full"}
+                  icon={<MdOutlineMenu />}
+                ></IconButton>
+              </HStack>
             </HStack>
             <Outlet />
           </Container>

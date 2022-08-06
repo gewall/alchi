@@ -1,10 +1,10 @@
-import { HStack } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import React from "react";
 import { withColorMode } from "../../libs/hocs";
 
 const Card = (props) => {
   return (
-    <HStack
+    <Flex
       //   maxW={"sm"}
       //   w={""}
       rounded={"lg"}
@@ -14,7 +14,7 @@ const Card = (props) => {
       {...props}
     >
       {props.children}
-    </HStack>
+    </Flex>
   );
 };
 
